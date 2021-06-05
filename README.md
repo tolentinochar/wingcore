@@ -1,0 +1,2 @@
+# wingcore
+Discord bot core
