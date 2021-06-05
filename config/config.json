@@ -1,0 +1,10 @@
+{
+  "commandPrefix": "p!"
+  ,"mentionPrefix": "paimon"
+  ,"region": "asia"
+  ,"language": "en-us"
+  ,"channelWhitelist": []
+  ,"channelBlackList": []
+  ,"dailyResetLocalTime": "04:00:00"
+  ,"showInfo": false
+}

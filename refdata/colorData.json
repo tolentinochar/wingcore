@@ -1,0 +1,29 @@
+{
+  "colors": [
+    {
+       "name": "Error"
+      ,"code": "#E74C3C"
+    },{
+       "name": "Info"
+      ,"code": "#3498DB"
+    },{
+       "name": "Warning"
+      ,"code": "#F1C40F"
+    },{
+       "name": "Success"
+      ,"code": "#2ECC71"
+    },{
+       "name": "Red"
+      ,"code": "#E74C3C"
+    },{
+       "name": "Blue"
+      ,"code": "#3498DB"
+    },{
+       "name": "Yellow"
+      ,"code": "#F1C40F"
+    },{
+       "name": "Green"
+      ,"code": "#2ECC71"
+    }
+  ]
+}

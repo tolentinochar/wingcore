@@ -1,0 +1,10 @@
+{
+    "timezones": [
+    {
+        "id": "0"
+        ,"name": "asia"
+        ,"description": "GMT+8"
+        ,"offset": "-4"
+    }
+    ]
+}

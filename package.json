@@ -1,0 +1,11 @@
+{
+  "name": "wingcore",
+  "version": "1.0.0",
+  "description": "bot core",
+  "main": "wingcore.js",
+  "scripts": {
+    "start": "node wingcore.js"
+  },
+  "author": "zero wing",
+  "license": "ISC"
+}
