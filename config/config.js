@@ -80,7 +80,7 @@ class Config {
 
       var envChannelWhitelist = this.envCHANNEL_WHITELIST;
       if (envChannelWhitelist !== null && envChannelWhitelist !== undefined && envChannelWhitelist !== '') {
-        allWhitelist.push(envChannelWhitelist.split(','));
+        allWhitelist.concat(envChannelWhitelist.split(','));
       }
 
       this._channelWhitelist = allWhitelist;
@@ -97,7 +97,7 @@ class Config {
 
       var envChannelBlacklist = this.envChannelBlacklist;
       if (envChannelBlacklist !== null && envChannelBlacklist !== undefined && envChannelBlacklist !== '') {
-        allBlacklist.push(envChannelBlacklist.split(','));
+        allBlacklist.concat(envChannelBlacklist.split(','));
       }
 
       this._channelBlacklist = allBlacklist;
