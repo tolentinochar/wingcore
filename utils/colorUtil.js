@@ -8,13 +8,8 @@ class ColorUtil {
 }
 
 function searchColor(colorName) {
-  for (var color of colors) {
-    if (color != null
-        && color.name != null
-        && color.name === colorName) {
-      return color;
-    }
-  }
+  var ret = (colorName != null && colors != null) ? colors.find(x => x.name === colorName) : null;
+  return ret;
 }
 
 module.exports = ColorUtil;

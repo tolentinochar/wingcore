@@ -18,13 +18,8 @@ class EmojiUtil {
 }
 
 function searchEmoji(emojiName) {
-  for (var emo of emojis) {
-    if (emo != null
-        && emo.name != null
-        && emo.name === emojiName) {
-      return emo;
-    }
-  }
+  var ret = (emojiName != null && emojis != null) ? emojis.find(x => x.name === emojiName) : null;
+  return ret;
 }
 
 module.exports = EmojiUtil;

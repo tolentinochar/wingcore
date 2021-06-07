@@ -5,10 +5,19 @@ const { v4: uuidv4 } = require('uuid');
 var defaultJson = require('./config.json');
 var timezoneJson = require('../refdata/timezoneData.json');
 
-
 class Config {
   constructor(configJson) {
     this._configJson = configJson;
+
+    //create property for custom config (keys not in default)
+    const defaultKeys = Object.keys(defaultJson);
+    const customKeys = defaultKeys !== null ? Object.keys(this._configJson).filter(x => !defaultKeys.includes(x)) : null;
+
+    if (customKeys !== null) {
+      for (var key of customKeys) {
+        this[key] = this._configJson[key];
+      }
+    }
   }
 
   get envTOKEN() {
@@ -30,7 +39,7 @@ class Config {
   get version() { return this._version; }
   set version(value) { if (value) this._version = value; }
 
-  get uuid() { 
+  get uuid() {
     if (this._uuid == null) {
       this._uuid = uuidv4();
     }
@@ -45,14 +54,14 @@ class Config {
 
   get commandPrefix() {
     if (this._commandPrefix == null) {
-      this._commandPrefix = this._configJson.commandPrefix;
+      this._commandPrefix = (this._configJson != null && this._configJson.commandPrefix != null) ? this._configJson.commandPrefix : defaultJson.commandPrefix;
     }
     return this._commandPrefix;
   }
 
   get mentionPrefix() {
     if (this._mentionPrefix == null) {
-      this._mentionPrefix = this._configJson.mentionPrefix;
+      this._mentionPrefix = (this._configJson != null && this._configJson.mentionPrefix != null) ? this._configJson.mentionPrefix : defaultJson.mentionPrefix;
     }
     return this._mentionPrefix;
   }
@@ -74,13 +83,17 @@ class Config {
   get channelWhitelist() {
     if (this._channelWhitelist == null) {
       var allWhitelist = [];
-      if (defaultJson !== null && defaultJson.channelWhitelist !== undefined && defaultJson.channelWhitelist.length > 0) {
-        allWhitelist.push(defaultJson.channelWhitelist);
+
+      if (this._configJson !== null && this._configJson.channelWhitelist !== undefined && this._configJson.channelWhitelist.length > 0) {
+        allWhitelist = allWhitelist.concat(this._configJson.channelWhitelist);
+      }
+      else if (defaultJson !== null && defaultJson.channelWhitelist !== undefined && defaultJson.channelWhitelist.length > 0) {
+        allWhitelist = allWhitelist.concat(defaultJson.channelWhitelist);
       }
 
       var envChannelWhitelist = this.envCHANNEL_WHITELIST;
       if (envChannelWhitelist !== null && envChannelWhitelist !== undefined && envChannelWhitelist !== '') {
-        allWhitelist.concat(envChannelWhitelist.split(','));
+        allWhitelist = allWhitelist.concat(envChannelWhitelist.split(','));
       }
 
       this._channelWhitelist = allWhitelist;
@@ -91,13 +104,17 @@ class Config {
   get channelBlacklist() {
     if (this._channelBlacklist == null) {
       var allBlacklist = [];
-      if (defaultJson !== null && defaultJson.channelBlacklist !== undefined && defaultJson.channelBlacklist.length > 0) {
-        allBlacklist.push(defaultJson.channelBlacklist);
+
+      if (this._configJson !== null && this._configJson.channelBlacklist !== undefined && this._configJson.channelBlacklist.length > 0) {
+        allBlacklist = allBlacklist.concat(this._configJson.channelBlacklist);
+      }
+      else if (defaultJson !== null && defaultJson.channelBlacklist !== undefined && defaultJson.channelBlacklist.length > 0) {
+        allBlacklist = allBlacklist.concat(defaultJson.channelBlacklist);
       }
 
       var envChannelBlacklist = this.envChannelBlacklist;
       if (envChannelBlacklist !== null && envChannelBlacklist !== undefined && envChannelBlacklist !== '') {
-        allBlacklist.concat(envChannelBlacklist.split(','));
+        allBlacklist = allBlacklist.concat(envChannelBlacklist.split(','));
       }
 
       this._channelBlacklist = allBlacklist;
@@ -128,7 +145,6 @@ class Config {
     }
     return this._timezoneOffset;
   }
-
 }
 
 module.exports = Config;
