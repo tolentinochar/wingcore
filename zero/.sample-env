@@ -1,0 +1,3 @@
+TOKEN=Your bot's token (required)
+CHANNEL_WHITELIST=comma-separated list of channel IDs where your bot is going to process commands (optional)
+IS_LIVE=<true/false> environment is Live/Production

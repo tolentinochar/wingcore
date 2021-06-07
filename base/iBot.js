@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const extensions = require('../extensions/extension.js');
 const Discord = require('discord.js');
 

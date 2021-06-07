@@ -1,6 +1,6 @@
 {
   "commandPrefix": "!"
-  ,"mentionPrefix": "zero"
+  ,"mentionPrefix": "zerobot"
   ,"region": "asia"
   ,"language": "en-us"
   ,"channelWhitelist": []
