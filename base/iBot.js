@@ -14,6 +14,7 @@ const noCommand = new noCommandHandler();
 const deleteCommand = require('../commands/deleteCommand.js');
 const pingCommand = require('../commands/pingCommand.js');
 const instanceCommand = require('../commands/instanceCommand.js');
+const helpCommand = require('../commands/helpCommand.js');
 
 const configJs = require('../config/config.js');
 
@@ -61,6 +62,11 @@ class IBot {
         command.config = this.config;
       }
 
+      //pass specifically for help command
+      if (command.commandName == 'help') {
+        request.allCommandInfo = this.allCommandInfo;
+      }
+
       command.handleCommand(request);
       this.handleCommand(request);
     }
@@ -84,6 +90,7 @@ class IBot {
         new deleteCommand()
         , new pingCommand()
         , new instanceCommand()
+        , new helpCommand()
       ];
 
       var extraCommands = this.getAllCommands();
@@ -92,10 +99,23 @@ class IBot {
         allBotCommands = allBotCommands.concat(extraCommands);
       }
 
+      allBotCommands.sort((a,b) => (a.commandName[0] > b.commandName[0]) ? 1 : ((b.commandName[0] > a.commandName[0]) ? -1 : 0));
+
       this._allCommands = allBotCommands;
     }
 
     return this._allCommands;
+  }
+
+  get allCommandInfo() {
+    if (this._allCommandInfo == null && this.allCommands !== null) {
+      var info = '';
+      for (var cmd of this.allCommands) {
+        info += cmd.infoMessage + '\n\n';
+      }
+      this._allCommandInfo = info;
+    }
+    return this._allCommandInfo;
   }
 
   getBotCommandHandler(command) {

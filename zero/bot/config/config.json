@@ -1,5 +1,5 @@
 {
-  "commandPrefix": "!"
+  "commandPrefix": "/"
   ,"mentionPrefix": "zerobot"
   ,"region": "asia"
   ,"language": "en-us"

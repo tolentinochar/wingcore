@@ -15,14 +15,18 @@ class ICommand {
   get commandName() { return this._commandName; }
   get fullCommandName() {
     if (this._fullCommandName == null) {
-      var ret = '{0}{1}';
-      var commandPrefix = this.config.commandPrefix;
-
-      ret = ret.split('{0}').join(commandPrefix);
-      ret = ret.split('{1}').join(this._commandName);
+      var ret = '{0}';
+      ret = ret.split('{0}').join(this.commandName[0]);
       this._fullCommandName = ret;
     }
     return this._fullCommandName;
+  }
+
+  get aliases() {
+    if (this._aliases == null) {
+      this._aliases = this.commandName.join(', ');
+    }
+    return this._aliases;
   }
 
   get mention() { return this._mention; }
@@ -33,6 +37,11 @@ class ICommand {
       var reply = this.info();
 
       reply = reply.split('{0}').join(cmdName);
+      if (this.commandName.length > 1) {
+        reply += '\n`aliases: {0}`';
+        reply = reply.split('{0}').join(this.aliases);
+      }
+
       this._infoMessage = reply;
     }
 
@@ -63,7 +72,7 @@ class ICommand {
       if (this.request.args != null
         && this.request.args.length == 1
         && this.request.args[0] === '?') {
-        this.sendInfo(this.infoMessage, this.fullCommandName + ' Info');
+        this.sendInfo(this.infoMessage, this.fullCommandName);
         return;
       }
 

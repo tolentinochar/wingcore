@@ -1,5 +1,5 @@
 {
-  "commandPrefix": "!"
+  "commandPrefix": "/"
   ,"mentionPrefix": "zero"
   ,"region": "asia"
   ,"language": "en-us"
