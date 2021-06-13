@@ -6,8 +6,7 @@ class DeleteCommand extends ICommand {
         model.commandName = ['delete'];
         model.mention = ['delete'];
         model.argumentCounts = [1];
-        model.permissions = ['MANAGE_CHANNELS'];
-        //MANAGE_MESSAGES
+        model.permissions = ['MANAGE_MESSAGES'];
         super(model);
     }
 
