@@ -1,20 +1,14 @@
 const ICommand = require('./iCommand.js');
 
-const commandName = ['delete'];
-const mention = ['delete'];
-const argumentCounts = [1];
-const infoEmoji = null;
-const responseEmoji = null;
-
 class DeleteCommand extends ICommand {
     constructor() {
-        super(
-            commandName
-            , mention
-            , argumentCounts
-            , infoEmoji
-            , responseEmoji
-        );
+        var model = {};
+        model.commandName = ['delete'];
+        model.mention = ['delete'];
+        model.argumentCounts = [1];
+        model.permissions = ['MANAGE_CHANNELS'];
+        //MANAGE_MESSAGES
+        super(model);
     }
 
     info() {

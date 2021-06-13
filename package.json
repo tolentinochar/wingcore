@@ -1,11 +1,16 @@
 {
   "name": "wingcore",
-  "version": "1.0.0",
+  "version": "1.0.4",
   "description": "bot core",
   "main": "wingcore.js",
   "scripts": {
     "start": "node wingcore.js"
   },
   "author": "zero wing",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^12.4.1",
+    "dotenv": "^8.2.0",
+    "uuid": "^8.3.1"
+  }
 }

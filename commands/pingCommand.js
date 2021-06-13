@@ -1,20 +1,11 @@
 const ICommand = require('./iCommand.js');
 
-const commandName = ['ping', 'pong'];
-const mention = ['ping', 'pong'];
-const argumentCounts = null;
-const infoEmoji = null;
-const responseEmoji = null;
-
 class PingCommand extends ICommand {
     constructor() {
-        super(
-            commandName
-            , mention
-            , argumentCounts
-            , infoEmoji
-            , responseEmoji
-        );
+        var model = {};
+        model.commandName = ['ping', 'pong'];
+        model.mention = ['ping', 'pong'];
+        super(model);
     }
 
     info() {

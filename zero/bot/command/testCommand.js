@@ -8,13 +8,9 @@ const responseEmoji = null;
 
 class TestCommand extends ICommand {
     constructor() {
-        super(
-            commandName
-            , mention
-            , argumentCounts
-            , infoEmoji
-            , responseEmoji
-        );
+        var model = {};
+        model.commandName = ['x'];
+        super(model);
     }
 
     info() {

@@ -1,20 +1,10 @@
 const ICommand = require('./iCommand.js');
 
-const commandName = null;
-const mention = null;
-const argumentCounts = [0];
-const infoEmoji = null;
-const responseEmoji = null;
-
 class NoCommand extends ICommand {
   constructor() {
-    super(
-      commandName
-      , mention
-      , argumentCounts
-      , infoEmoji
-      , responseEmoji
-    );
+    var model = {};
+    model.argumentCounts = [0];
+    super(model);
   }
 
   handle(args) {

@@ -1,20 +1,10 @@
 const ICommand = require('./iCommand.js');
 
-const commandName = ['help'];
-const mention = null;
-const argumentCounts = null;
-const infoEmoji = null;
-const responseEmoji = null;
-
 class HelpCommand extends ICommand {
     constructor() {
-        super(
-            commandName
-            , mention
-            , argumentCounts
-            , infoEmoji
-            , responseEmoji
-        );
+        var model = {};
+        model.commandName = ['help'];
+        super(model);
     }
 
     info() {

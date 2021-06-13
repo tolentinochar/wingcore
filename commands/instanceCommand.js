@@ -3,18 +3,16 @@ const ICommand = require('./iCommand.js');
 const commandName = ['instance'];
 const mention = ['instance'];
 const argumentCounts = null;
+const permissions = null;
 const infoEmoji = null;
 const responseEmoji = null;
 
 class InstanceCommand extends ICommand {
     constructor() {
-        super(
-            commandName
-            , mention
-            , argumentCounts
-            , infoEmoji
-            , responseEmoji
-        );
+        var model = {};
+        model.commandName = ['instance'];
+        model.mention = ['instance'];
+        super(model);
     }
 
     info() {

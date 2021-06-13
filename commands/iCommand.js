@@ -3,13 +3,23 @@ const textUtil = require('../utils/textUtil.js');
 const emojiUtil = require('../utils/emojiUtil.js');
 const colorUtil = require('../utils/colorUtil.js');
 
+const newModel = {
+  commandName: null
+  , mention: null
+  , argumentCounts: null
+  , permissions: null
+  , infoEmoji: null
+  , responseEmoji: null
+};
+
 class ICommand {
-  constructor(commandName, mention, argumentCounts, infoEmoji, responseEmoji) {
-    this._commandName = commandName;
-    this._mention = mention;
-    this._argumentCounts = argumentCounts;
-    this._infoEmoji = infoEmoji;
-    this._responseEmoji = responseEmoji;
+  constructor(commandModel) {
+    this._commandName = commandModel.commandName;
+    this._mention = commandModel.mention;
+    this._argumentCounts = commandModel.argumentCounts;
+    this._permissions = commandModel.permissions;
+    this._infoEmoji = commandModel.infoEmoji;
+    this._responseEmoji = commandModel.responseEmoji;
   }
 
   get commandName() { return this._commandName; }
@@ -51,11 +61,22 @@ class ICommand {
   get request() { return this._request; }
   set request(newRequest) { if (newRequest) this._request = newRequest; }
 
+  get permissions() { return this._permissions; }
+
+  get argumentCounts() { return this._argumentCounts; }
+  get infoEmoji() { return this._infoEmoji; }
+  get responseEmoji() { return this._responseEmoji; }
+
   get config() { return this._config; }
   set config(value) { if (value) this._config = value; }
 
   handleCommand(req) {
     this.request = req;
+
+    if (this.permissions != null && !this.canDoAll(this.permissions)) {
+      this.sendError('You have insufficient rights to perform this command.');
+      return;
+    }
 
     var argsCount;
 
@@ -76,9 +97,9 @@ class ICommand {
         return;
       }
 
-      if (this._argumentCounts != null
+      if (this.argumentCounts != null
         && (argsCount == null
-          || this._argumentCounts.indexOf(argsCount) < 0)
+          || this.argumentCounts.indexOf(argsCount) < 0)
       ) {
 
         this.sendArgumentError();
@@ -100,6 +121,33 @@ class ICommand {
     }
   }
 
+  canDo(permission) {
+    ////bot check
+    //return this.request.message.member.guild.me.hasPermission(permission);
+    //user check
+    return this.request.message.member.hasPermission(permission);
+  }
+
+  canDoAll(permissions) {
+    for (var permission of permissions) {
+      var hasPermission = this.canDo(permission);
+      if (hasPermission == null || !hasPermission) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  canDoAny(permissions) {
+    for (var permission of permissions) {
+      var hasPermission = this.canDo(permission);
+      if (hasPermission != null && hasPermision) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   send(messageText, title, colorName, emojiName, isSelfDelete = false) {
     var emojiUrl = null;
     var colorHex = null;
@@ -107,8 +155,8 @@ class ICommand {
     if (emojiName != null && emojiName != '') {
       emojiUrl = this.emojiUrl(emojiName);
     }
-    else if (this._responseEmoji != null) {
-      emojiUrl = this.emojiUrl(this._responseEmoji);
+    else if (this.responseEmoji != null) {
+      emojiUrl = this.emojiUrl(this.responseEmoji);
     }
 
     if (colorName != null && colorName != '') {
@@ -135,8 +183,8 @@ class ICommand {
     if (emojiName != null && emojiName != '') {
       emojiUrl = this.emojiUrl(emojiName);
     }
-    else if (this._responseEmoji != null) {
-      emojiUrl = this.emojiUrl(this._responseEmoji);
+    else if (this.responseEmoji != null) {
+      emojiUrl = this.emojiUrl(this.responseEmoji);
     }
 
     if (colorName != null && colorName != '') {
@@ -173,8 +221,8 @@ class ICommand {
 
     var infoUrl = null;
 
-    if (this._infoEmoji != null && this._infoEmoji != '') {
-      infoUrl = this._infoEmoji;
+    if (this.infoEmoji != null && this.infoEmoji != '') {
+      infoUrl = this.infoEmoji;
     }
 
     if (infoUrl == null) {
