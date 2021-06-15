@@ -20,7 +20,7 @@ class EmojiUtil {
   }
 
   static url(emojiName, emojis) {
-    var emoji = searchEmoji(emojiName, emojis);
+    var emoji = this.searchEmoji(emojiName, emojis);
     var emojiUrl = 'https://cdn.discordapp.com/emojis/{0}.png?v=1';
     emojiUrl = emojiUrl.split('{0}').join(emoji.id);
     return emojiUrl;
