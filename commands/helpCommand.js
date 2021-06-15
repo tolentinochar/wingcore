@@ -17,7 +17,10 @@ class HelpCommand extends ICommand {
     }
 
     handle(args) {
-        var txt = '{2} **{0}**\n\n{1}';
+        var txt = '{3} **{0}**\n\n{1}'+
+        'Use `{2}<command name> ?` to see full command info.' +
+        '\nex:`{2}help ?`' +
+        '';
         var infoTmp = '';
         var allInfo = '';
         for (var info of this.request.allCommandInfo) {
@@ -28,7 +31,8 @@ class HelpCommand extends ICommand {
         }
         txt = txt.split('{0}').join('Bot Commands');
         txt = txt.split('{1}').join(allInfo);
-        txt = txt.split('{2}').join(this.emoji(this.config.infoEmoji));
+        txt = txt.split('{2}').join(this.config.commandPrefix);
+        txt = txt.split('{3}').join(this.emoji(this.config.infoEmoji));
         this.send(txt);
     }
 }
