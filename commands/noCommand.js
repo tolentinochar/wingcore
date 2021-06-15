@@ -3,14 +3,20 @@ const ICommand = require('./iCommand.js');
 class NoCommand extends ICommand {
   constructor() {
     var model = {};
+    model.commandName = ['Unknown'];
     model.argumentCounts = [0];
     super(model);
   }
 
+  info() {
+    var ret = '';
+
+    return ret;
+  }
+
   handle(args) {
     var reply = '' +
-      'Paimon can\'t understand!' +
-      '\nUnknown command is used.' +
+      'Unknown command' +
       '';
     this.sendError(reply);
   }

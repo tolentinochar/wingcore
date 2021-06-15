@@ -1,12 +1,5 @@
 const ICommand = require('./iCommand.js');
 
-const commandName = ['instance'];
-const mention = ['instance'];
-const argumentCounts = null;
-const permissions = null;
-const infoEmoji = null;
-const responseEmoji = null;
-
 class InstanceCommand extends ICommand {
     constructor() {
         var model = {};
@@ -18,7 +11,7 @@ class InstanceCommand extends ICommand {
     info() {
         var ret = '' +
             '`{0}`' +
-            '\n: reponds with the bot instance currently running.' +
+            '\n: reponds with the bot instance currently running' +
             '';
 
         return ret;

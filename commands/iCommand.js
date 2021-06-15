@@ -8,7 +8,6 @@ const newModel = {
   , mention: null
   , argumentCounts: null
   , permissions: null
-  , infoEmoji: null
   , responseEmoji: null
 };
 
@@ -18,16 +17,13 @@ class ICommand {
     this._mention = commandModel.mention;
     this._argumentCounts = commandModel.argumentCounts;
     this._permissions = commandModel.permissions;
-    this._infoEmoji = commandModel.infoEmoji;
     this._responseEmoji = commandModel.responseEmoji;
   }
 
   get commandName() { return this._commandName; }
   get fullCommandName() {
     if (this._fullCommandName == null) {
-      var ret = '{0}';
-      ret = ret.split('{0}').join(this.commandName[0]);
-      this._fullCommandName = ret;
+      this._fullCommandName = this.commandName[0];
     }
     return this._fullCommandName;
   }
@@ -64,7 +60,6 @@ class ICommand {
   get permissions() { return this._permissions; }
 
   get argumentCounts() { return this._argumentCounts; }
-  get infoEmoji() { return this._infoEmoji; }
   get responseEmoji() { return this._responseEmoji; }
 
   get config() { return this._config; }
@@ -74,7 +69,7 @@ class ICommand {
     this.request = req;
 
     if (this.permissions != null && !this.canDoAll(this.permissions)) {
-      this.sendError('You have insufficient rights to perform this command.');
+      this.sendError('You have insufficient rights to perform this command');
       return;
     }
 
@@ -84,9 +79,8 @@ class ICommand {
       argsCount = this.request.args.length;
     }
     catch (e) {
-      console.error(e);
-      this.sendError('Parameter error.');
-      return;
+      this.sendError('Can\'t read parameter');
+      throw e;
     }
 
     try {
@@ -107,24 +101,22 @@ class ICommand {
       }
     }
     catch (e) {
-      console.error(e);
-      this.sendError('Argument error.');
-      return;
+      this.sendError('Argument error');
+      throw e;
     }
 
     try {
       this.handle(this.request.args);
     }
     catch (e) {
-      console.error(e);
-      this.sendError('Unhandled Error');
+      var txt = 'Bot Error\n\nPlease contact admin/mod.\n\nId: {0}';
+      txt = txt.split('{0}').join(this.request.message.id);
+      this.sendCritical(txt);
+      throw e;
     }
   }
 
   canDo(permission) {
-    ////bot check
-    //return this.request.message.member.guild.me.hasPermission(permission);
-    //user check
     return this.request.message.member.hasPermission(permission);
   }
 
@@ -148,7 +140,7 @@ class ICommand {
     return false;
   }
 
-  send(messageText, title, colorName, emojiName, isSelfDelete = false) {
+  send(messageText, colorName, emojiName, isSelfDelete = false) {
     var emojiUrl = null;
     var colorHex = null;
 
@@ -162,21 +154,20 @@ class ICommand {
     if (colorName != null && colorName != '') {
       colorHex = this.color(colorName);
     }
-    else if (colorHex == null) {
-      colorHex = this.color('Info');
+    if (colorHex == null) {
+      colorHex = this.color('info');
     }
 
     var model = response.newMessage;
     model.message = this.request.message;
     model.messageText = messageText;
     model.color = colorHex;
-    model.title = title;
     model.emojiUrl = emojiUrl;
 
-    response.send(model, isSelfDelete);
+    return response.send(model, isSelfDelete);
   }
 
-  reply(replyText, messageText, title, colorName, emojiName, isSelfDelete = false) {
+  reply(replyText, messageText, colorName, emojiName, isSelfDelete = false) {
     var emojiUrl = null;
     var colorHex = null;
 
@@ -191,7 +182,7 @@ class ICommand {
       colorHex = this.color(colorName);
     }
     else if (colorHex == null) {
-      colorHex = this.color('Info');
+      colorHex = this.color('info');
     }
 
     var model = response.newMessage;
@@ -199,37 +190,39 @@ class ICommand {
     model.messageText = messageText;
     model.replyText = replyText;
     model.color = colorHex;
-    model.title = title;
     model.emojiUrl = emojiUrl;
 
-    response.reply(model, isSelfDelete);
+    return response.reply(model, isSelfDelete);
   }
 
-  sendError(msg) {
-    this.send(msg, 'Error', 'Error', 'PaimonHurt');
+  sendError(msg, isSelfDelete = false) {
+    var txt = '{1} {0}';
+    txt = txt.split('{0}').join(msg);
+    txt = txt.split('{1}').join(this.emoji(this.config.warningEmoji));
+    this.send(txt, 'error', null, isSelfDelete);
   }
 
-  sendSuccess(msg) {
-    this.send(msg, 'Success', 'Success', 'DilucCool');
+  sendCritical(msg, isSelfDelete = false) {
+    var txt = '{1} {0}';
+    txt = txt.split('{0}').join(msg);
+    txt = txt.split('{1}').join(this.emoji(this.config.errorEmoji));
+    this.send(txt, 'error', null, isSelfDelete);
   }
 
-  sendInfo(msg, title) {
-    var infoTitle = title;
-    if (infoTitle == null) {
-      infoTitle = 'Info';
-    }
+  sendSuccess(msg, isSelfDelete = false) {
+    var txt = '{1} {0}';
+    txt = txt.split('{0}').join(msg);
+    txt = txt.split('{1}').join(this.emoji(this.config.successEmoji));
+    this.send(txt, 'success', null, isSelfDelete);
+  }
 
-    var infoUrl = null;
+  sendInfo(msg) {
+    var txt = "{2} **{0} Command**\n\n{1}";
+    txt = txt.split("{0}").join(this.commandName);
+    txt = txt.split("{1}").join(msg);
+    txt = txt.split("{2}").join(this.emoji(this.config.infoEmoji));
 
-    if (this.infoEmoji != null && this.infoEmoji != '') {
-      infoUrl = this.infoEmoji;
-    }
-
-    if (infoUrl == null) {
-      infoUrl = 'DilucCool';
-    }
-
-    this.send(msg, infoTitle, 'Info', infoUrl);
+    this.send(txt, 'info');
   }
 
   sendArgumentError(msg) {
@@ -242,11 +235,11 @@ class ICommand {
   }
 
   emoji(emojiName) {
-    return emojiUtil.get(emojiName);
+    return emojiUtil.get(emojiName, this.config.emojis);
   }
 
   emojiUrl(emojiName) {
-    return emojiUtil.url(emojiName);
+    return emojiUtil.url(emojiName, this.config.emojis);
   }
 
   color(colorName) {

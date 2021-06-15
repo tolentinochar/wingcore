@@ -1,5 +1,5 @@
 class Response {
-  static send(model, isSelfDelete = false) {
+  static async send(model, isSelfDelete = false) {
     var msg = {
       color: model.color
       , title: model.title
@@ -14,19 +14,24 @@ class Response {
     }
 
     if (isSelfDelete) {
-      model.message.channel.send({ embed: msg })
+      return await model.message.channel.send({ embed: msg })
         .then(msg => {
           setTimeout(() => msg.delete(), 10000)
         })
-        .catch(console.error);
+        .catch(function (e) {
+          throw e;
+        });
+
     }
     else {
-      model.message.channel.send({ embed: msg })
-        .catch(console.error);
+      return await model.message.channel.send({ embed: msg })
+        .catch(function (e) {
+          throw e;
+        });
     }
   }
 
-  static reply(model, isSelfDelete = false) {
+  static async reply(model, isSelfDelete = false) {
     var msg = {
       color: model.color
       , title: model.title
@@ -45,15 +50,19 @@ class Response {
     }
 
     if (isSelfDelete) {
-      model.message.reply(model.replyText, (msg != null) ? { embed: msg } : null)
+      return await model.message.reply(model.replyText, (msg != null) ? { embed: msg } : null)
         .then(msg => {
           setTimeout(() => msg.delete(), 10000)
         })
-        .catch(console.error);
+        .catch(function (e) {
+          throw e;
+        });
     }
     else {
-      model.message.reply(model.replyText, (msg != null) ? { embed: msg } : null)
-        .catch(console.error);
+      return await model.message.reply(model.replyText, (msg != null) ? { embed: msg } : null)
+        .catch(function (e) {
+          throw e;
+        });
     }
   }
 

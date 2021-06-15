@@ -11,7 +11,7 @@ class Logger {
     }
 
     static request(request, uuid) {
-        var log = '{0} [{1}] ({2}) {3}: {4}';
+        var log = '{0} [{1}] ({2}) {3}:{4}';
         log = log.split('{0}').join(new Date().toDateTime());
         log = log.split('{1}').join(uuid);
         log = log.split('{2}').join(request.message.id);
@@ -21,19 +21,25 @@ class Logger {
         console.log(log);
     }
 
-    static response(isSuccess, isHandled, message, uuid) {
-        var log = '' +
-            '{0} {1} {2} {3}' +
-            '';
+    static error(e, message = null, uuid = null) {
+        if (message != null && uuid != null) {
+            var log = '{0} [{1}] ({2}) {3}:{4}';
+            log = log.split('{0}').join(new Date().toDateTime());
+            log = log.split('{1}').join(uuid);
+            log = log.split('{2}').join(message.id);
+            log = log.split('{3}').join(message.author.tag);
+            log = log.split('{4}').join(message.content);
+            console.error(log);
+        }
 
-        log = log.split('{0}').join(new Date().toDateTime());
-        log = log.split('{1}').join(uuid);
-        log = log.split('{1}').join(request.client.user.tag);
-        log = log.split('{2}').join(isSuccess ? 'SUCCESS' : 'FAILED'); //success/failed
-        log = log.split('{3}').join(isHandled ? 'HANDLED' : 'UNHANDLED'); //handled/unhandled
-        log = log.split('{4}').join(message); //message
+        console.error(e);
+    }
 
-        console.warn(log);
+    static text(txt, title = null) {
+        if (title) {
+            console.log(title);
+        }
+        console.log(txt);
     }
 }
 

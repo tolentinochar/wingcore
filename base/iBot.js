@@ -13,25 +13,50 @@ const noCommand = new noCommandHandler();
 
 const deleteCommand = require('../commands/deleteCommand.js');
 const pingCommand = require('../commands/pingCommand.js');
+const pollCommand = require('../commands/pollCommand.js');
 const instanceCommand = require('../commands/instanceCommand.js');
 const helpCommand = require('../commands/helpCommand.js');
+const randomCommand = require('../commands/randomCommand.js');
 
 const configJs = require('../config/config.js');
 
+const newModel = {
+  configJson: null
+  , emojiJson: null
+  , version: null
+};
+
 class IBot {
-  constructor(configJson, version) {
-    this._config = new configJs(configJson);
-    this._config.version = version;
+  constructor(model) {
+    this._config = new configJs(model.configJson, model.emojiJson);
+    this._config.version = model.version;
 
     const client = new Discord.Client();
 
     client.once('ready', () => {
-      logger.ready(client, this.config.version, this.config.uuidShort)
+      try {
+        logger.ready(client, this.config.version, this.config.uuidShort)
+      }
+      catch (e) {
+        logger.error(e);
+      }
     });
-    client.login(this.config.envTOKEN);
+
+    try {
+      client.login(this.config.envTOKEN);
+    }
+    catch (e) {
+      logger.error(e);
+    }
+
 
     client.on('message', message => {
-      this.handleMessage(client, message);
+      try {
+        this.handleMessage(client, message);
+      }
+      catch (e) {
+        logger.error(e, message, this.config.uuidShort);
+      }
     });
 
   }
@@ -41,12 +66,19 @@ class IBot {
   }
 
   handleMessage(client, message) {
+    // Don't handle messages sent by the bot (avoid looping)
+    if (message.author.id === client.user.id) return false;
+
+    if (message.content == null || !message.content.startsWith(this.commandPrefix)) return false;
+
     request.setRequest(client, message, this.config.commandPrefix);
 
     if (this.shouldHandleMessage(request)) {
       var command = null;
 
-      logger.request(request, this.config.uuidShort);
+      if (this.config.envIS_LIVE != null && this.config.envIS_LIVE == 'false') {
+        logger.request(request, this.config.uuidShort);
+      }
 
       command = this.getBotCommandHandler(request.command);
 
@@ -73,7 +105,9 @@ class IBot {
     else if (this.hasMention(request)) {
       var mention = null;
 
-      logger.request(request, this.config.uuidShort);
+      if (this.config.envIS_LIVE != null && this.config.envIS_LIVE == 'false') {
+        logger.request(request, this.config.uuidShort);
+      }
 
       mention = this.getBotMentionHandler(request.mentionContent);
 
@@ -89,8 +123,10 @@ class IBot {
       var allBotCommands = [
         new deleteCommand()
         , new pingCommand()
+        , new pollCommand()
         , new instanceCommand()
         , new helpCommand()
+        , new randomCommand()
       ];
 
       var extraCommands = this.getAllCommands();
@@ -99,7 +135,7 @@ class IBot {
         allBotCommands = allBotCommands.concat(extraCommands);
       }
 
-      allBotCommands.sort((a,b) => (a.commandName[0] > b.commandName[0]) ? 1 : ((b.commandName[0] > a.commandName[0]) ? -1 : 0));
+      allBotCommands.sort((a, b) => (a.commandName[0] > b.commandName[0]) ? 1 : ((b.commandName[0] > a.commandName[0]) ? -1 : 0));
 
       this._allCommands = allBotCommands;
     }
@@ -109,9 +145,9 @@ class IBot {
 
   get allCommandInfo() {
     if (this._allCommandInfo == null && this.allCommands !== null) {
-      var info = '';
+      var info = [];
       for (var cmd of this.allCommands) {
-        info += cmd.infoMessage + '\n\n';
+        info.push(cmd.infoMessage);
       }
       this._allCommandInfo = info;
     }
@@ -139,11 +175,7 @@ class IBot {
   }
 
   shouldHandleMessage(request) {
-    var ret = false;
-    // Don't handle messages sent by the bot (avoid looping)
-    if (request.message.author.id === request.client.user.id) return ret;
-
-    ret = (
+    var ret = (
       request.messageContent.startsWith(this.commandPrefix)
       && (this.config.channelWhitelist.find(x => x == request.message.channel.id) != null || this.config.channelWhitelist.length === 0)
       && (!this.config.channelBlacklist.find(x => x == request.message.channel.id) == null || this.config.channelBlacklist.length === 0)
@@ -153,11 +185,7 @@ class IBot {
   }
 
   hasMention(request) {
-    var ret = false;
-    // Don't handle messages sent by the bot (avoid looping)
-    if (request.message.author.id === request.client.user.id) return ret;
-    
-    ret = (
+    var ret = (
       request.mentionContent.startsWith(this.mentionPrefix + ' ')
       && (this.config.channelWhitelist.find(x => x == request.message.channel.id) != null || this.config.channelWhitelist.length === 0)
       && (!this.config.channelBlacklist.find(x => x == request.message.channel.id) == null || this.config.channelBlacklist.length === 0)

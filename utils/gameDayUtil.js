@@ -26,10 +26,10 @@ class GameDayUtil {
 
   static resetDate(time) {
     var today = this.localDate();
-    
+
     var tomorrow = this.localDate();
     tomorrow.setDate(tomorrow.getDate() + 1);
-    
+
     var reset = this.localDate();
     reset.applyTime(time);
 

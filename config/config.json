@@ -1,10 +1,13 @@
 {
-  "commandPrefix": "/"
+  "commandPrefix": "."
   ,"mentionPrefix": "zero"
+  ,"infoEmoji": "information_source"
+  ,"warningEmoji": "warning"
+  ,"errorEmoji": "name_badge"
+  ,"successEmoji": "white_check_mark"
   ,"region": "asia"
   ,"language": "en-us"
   ,"channelWhitelist": []
   ,"channelBlackList": []
   ,"dailyResetLocalTime": "04:00:00"
-  ,"showInfo": false
 }

@@ -2,12 +2,14 @@
 const { v4: uuidv4 } = require('uuid');
 
 // Load data references
-var defaultJson = require('./config.json');
-var timezoneJson = require('../refdata/timezoneData.json');
+const defaultJson = require('./config.json');
+const timezoneJson = require('../refdata/timezoneData.json');
+const coreEmojiJson = require('../refdata/emojiData.json');
 
 class Config {
-  constructor(configJson) {
+  constructor(configJson, emojiJson) {
     this._configJson = configJson;
+    this._emojiJson = emojiJson;
 
     //create property for custom config (keys not in default)
     const defaultKeys = Object.keys(defaultJson);
@@ -64,6 +66,34 @@ class Config {
       this._mentionPrefix = (this._configJson != null && this._configJson.mentionPrefix != null) ? this._configJson.mentionPrefix : defaultJson.mentionPrefix;
     }
     return this._mentionPrefix;
+  }
+
+  get infoEmoji() {
+    if (this._infoEmoji == null) {
+      this._infoEmoji = (this._configJson != null && this._configJson.infoEmoji != null) ? this._configJson.infoEmoji : defaultJson.infoEmoji;
+    }
+    return this._infoEmoji;
+  }
+
+  get warningEmoji() {
+    if (this._warningEmoji == null) {
+      this._warningEmoji = (this._configJson != null && this._configJson.warningEmoji != null) ? this._configJson.warningEmoji : defaultJson.warningEmoji;
+    }
+    return this._warningEmoji;
+  }
+
+  get errorEmoji() {
+    if (this._errorEmoji == null) {
+      this._errorEmoji = (this._configJson != null && this._configJson.errorEmoji != null) ? this._configJson.errorEmoji : defaultJson.errorEmoji;
+    }
+    return this._errorEmoji;
+  }
+
+  get successEmoji() {
+    if (this._successEmoji == null) {
+      this._successEmoji = (this._configJson != null && this._configJson.successEmoji != null) ? this._configJson.successEmoji : defaultJson.successEmoji;
+    }
+    return this._successEmoji;
   }
 
   get language() {
@@ -144,6 +174,20 @@ class Config {
       this._timezoneOffset = this.timezone.offset;
     }
     return this._timezoneOffset;
+  }
+
+  get emojis() {
+    if (this._emojis == null) {
+      var allEmojis = coreEmojiJson["emojis"];
+      if (this._emojiJson != null) {
+        var customEmojis = this._emojiJson["emojis"];
+        for (var e of customEmojis) {
+          allEmojis.push(e);
+        }
+      }
+      this._emojis = allEmojis;
+    }
+    return this._emojis;
   }
 }
 

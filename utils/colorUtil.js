@@ -1,4 +1,4 @@
-const {colors} = require('../refdata/colorData.json');
+const { colors } = require('../refdata/colorData.json');
 
 class ColorUtil {
   static pick(colorName) {

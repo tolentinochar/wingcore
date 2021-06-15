@@ -1,28 +1,28 @@
 {
   "colors": [
     {
-       "name": "Error"
+       "name": "error"
       ,"code": "#E74C3C"
     },{
-       "name": "Info"
+       "name": "info"
       ,"code": "#3498DB"
     },{
-       "name": "Warning"
+       "name": "warning"
       ,"code": "#F1C40F"
     },{
-       "name": "Success"
+       "name": "success"
       ,"code": "#2ECC71"
     },{
-       "name": "Red"
+       "name": "red"
       ,"code": "#E74C3C"
     },{
-       "name": "Blue"
+       "name": "blue"
       ,"code": "#3498DB"
     },{
-       "name": "Yellow"
+       "name": "yellow"
       ,"code": "#F1C40F"
     },{
-       "name": "Green"
+       "name": "green"
       ,"code": "#2ECC71"
     }
   ]

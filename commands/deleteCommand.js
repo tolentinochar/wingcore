@@ -13,8 +13,9 @@ class DeleteCommand extends ICommand {
     info() {
         var ret = '' +
             '`{0} <count>`' +
-            '\n: deletes <count> number of messages.' +
-            '\n-`<count>`: limit of 100.' +
+            '\n: deletes messages' +
+            '\n-`<count>`: number of messages to delete, limit of 100' +
+            '\n-ex: `{0} 10`' +
             '';
 
         return ret;
@@ -42,7 +43,7 @@ class DeleteCommand extends ICommand {
         text = text.split('{0}').join(deleteCount);
         text = text.split('{1}').join(deleteCount > 1 ? 's' : '');
 
-        this.send(text, null, null, null, true);
+        this.sendSuccess(text, true);
     }
 }
 

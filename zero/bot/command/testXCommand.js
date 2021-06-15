@@ -18,8 +18,8 @@ class TestXCommand extends ICommand {
 
     handle(args) {
         var ret = '' +
-        'X: Hello {0}' +
-        '';
+            'X: Hello {0}' +
+            '';
         ret = ret.split('{0}').join('world');
         this.send(ret);
     }
