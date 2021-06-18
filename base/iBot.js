@@ -3,6 +3,7 @@ require('dotenv').config();
 const extensions = require('../extensions/extension.js');
 const Discord = require('discord.js');
 
+const coreInit = require('./coreInit.js');
 const logger = require('../logger/logger.js');
 
 const requestModel = require('../messaging/request.js');
@@ -28,6 +29,13 @@ const newModel = {
 
 class IBot {
   constructor(model) {
+    try {
+      coreInit.initialize();
+    }
+    catch(e) {
+      logger.error(e);
+    }
+    
     this._config = new configJs(model.configJson, model.emojiJson);
     this._config.version = model.version;
 

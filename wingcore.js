@@ -6,3 +6,6 @@ module.exports.ICommand = iCommand;
 
 const gameDayUtil = require('./utils/gameDayUtil.js');
 module.exports.GameDayUtil = gameDayUtil;
+
+const fileUtil = require('./utils/fileUtil.js');
+module.exports.FileUtil = fileUtil;

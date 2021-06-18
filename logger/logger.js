@@ -1,3 +1,7 @@
+const fileUtil = require('../utils/fileUtil.js');
+
+const path = '../temp/logs';
+const fileName = new Date().toDate() + '_logs.txt'
 
 class Logger {
     static ready(client, version, uuid) {
@@ -7,6 +11,7 @@ class Logger {
         log = log.split('{2}').join(client.user.tag);
         log = log.split('{3}').join(version);
 
+        fileUtil.write(path, fileName, log);
         console.info(log);
     }
 
@@ -22,8 +27,9 @@ class Logger {
     }
 
     static error(e, message = null, uuid = null) {
+        var log = '';
         if (message != null && uuid != null) {
-            var log = '{0} [{1}] ({2}) {3}:{4}';
+            log = '{0} [{1}] ({2}) {3}:{4}';
             log = log.split('{0}').join(new Date().toDateTime());
             log = log.split('{1}').join(uuid);
             log = log.split('{2}').join(message.id);
@@ -32,10 +38,17 @@ class Logger {
             console.error(log);
         }
 
+        log += '\n' + e.stack;
+
+        fileUtil.write(path, fileName, log);
         console.error(e);
     }
 
-    static text(txt, title = null) {
+    static log(txt) {
+        fileUtil.write(path, fileName, txt);
+    }
+
+    static console(txt, title = null) {
         if (title) {
             console.log(title);
         }

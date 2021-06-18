@@ -45,12 +45,16 @@ Date.prototype.toDateTime = function () {
   return ret;
 };
 
+Date.prototype.toDate = function () {
+  return this.toISOString().split('T')[0];
+};
+
 Date.prototype.applyTime = function (time) {
   var times = time.split(':');
   var hour = (times.length > 0) ? times[0] : 0;
   var min = (times.length > 1) ? times[1] : 0;
   var sec = (times.length > 2) ? times[2] : 0;
-  
+
   this.setHours(hour);
   this.setMinutes(min);
   this.setSeconds(sec);
@@ -59,30 +63,30 @@ Date.prototype.applyTime = function (time) {
 
 Number.prototype.minuteToWord = function () {
   var words = '{0}{1}{2}';
-    var hours = Math.floor(this / 60);
-    var mins = Math.floor(this - (hours * 60));
+  var hours = Math.floor(this / 60);
+  var mins = Math.floor(this - (hours * 60));
 
-    if (hours > 0) {
-      words = words.split('{0}').join(hours + ' hours');
-    }
-    else {
-      words = words.split('{0}').join('');
-    }
+  if (hours > 0) {
+    words = words.split('{0}').join(hours + ' hours');
+  }
+  else {
+    words = words.split('{0}').join('');
+  }
 
-    if (hours > 0 && mins > 0) {
-      words = words.split('{1}').join(' and ');
-    }
-    else {
-      words = words.split('{1}').join('');
-    }
+  if (hours > 0 && mins > 0) {
+    words = words.split('{1}').join(' and ');
+  }
+  else {
+    words = words.split('{1}').join('');
+  }
 
-    if (mins > 0) {
-      words = words.split('{2}').join(mins + ' minutes');
-    }
-    else {
-      words = words.split('{2}').join('');
-    }
-    return words;
+  if (mins > 0) {
+    words = words.split('{2}').join(mins + ' minutes');
+  }
+  else {
+    words = words.split('{2}').join('');
+  }
+  return words;
 };
 
 String.prototype.isNumber = function () {
