@@ -155,7 +155,7 @@ class IBot {
     if (this._allCommandInfo == null && this.allCommands !== null) {
       var info = [];
       for (var cmd of this.allCommands) {
-        info.push(cmd.fullCommandName);
+        info.push(cmd.helpInfo);
       }
       this._allCommandInfo = info;
     }

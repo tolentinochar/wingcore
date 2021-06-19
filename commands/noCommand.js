@@ -9,9 +9,11 @@ class NoCommand extends ICommand {
   }
 
   info() {
-    var ret = '';
-
-    return ret;
+    var model = this.newInfoModel;
+        model.header = '';
+        model.description = '';
+        model.detail = '';
+        return model;
   }
 
   handle(args) {

@@ -8,17 +8,16 @@ class HelpCommand extends ICommand {
     }
 
     info() {
-        var ret = '' +
-            '`{0}`' +
-            '\n: displays command list' +
-            '';
-
-        return ret;
+        var model = this.newInfoModel;
+        model.header = '`{0}`';
+        model.description = 'displays command list';
+        model.detail = '';
+        return model;
     }
 
     handle(args) {
         var txt = '{3} **{0}**\n\n{1}'+
-        'Use `{2}<command name> ?` to see full command info.' +
+        'Use `{2}<command> ?` to see full command info.' +
         '\nex:`{2}help ?`' +
         '';
         var infoTmp = '';

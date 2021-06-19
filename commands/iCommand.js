@@ -21,11 +21,11 @@ class ICommand {
   }
 
   get commandName() { return this._commandName; }
-  get fullCommandName() {
-    if (this._fullCommandName == null) {
-      this._fullCommandName = this.commandName[0];
+  get mainCommandName() {
+    if (this._mainCommandName == null) {
+      this._mainCommandName = this.commandName[0];
     }
-    return this._fullCommandName;
+    return this._mainCommandName;
   }
 
   get aliases() {
@@ -37,21 +37,62 @@ class ICommand {
 
   get mention() { return this._mention; }
 
+  get newInfoModel() {
+    return {
+      header: null
+      , description: null
+      , detail: null
+    };
+  }
+
+  get infoModel() {
+    if (this._infoModel == null) {
+      this._infoModel = this.info();
+    }
+    return this._infoModel;
+  }
+
   get infoMessage() {
     if (this._infoMessage == null) {
-      var cmdName = this.fullCommandName;
-      var reply = this.info();
+      var txt = '' +
+        '{0}\n: {1}{2}' +
+        '';
 
-      reply = reply.split('{0}').join(cmdName);
+      txt = txt.split('{0}').join(this.infoModel.header);
+      txt = txt.split('{1}').join(this.infoModel.description);
+      txt = txt.split('{2}').join(this.infoModel.detail);
+
+      //header format
+      txt = txt.split('{0}').join(this.mainCommandName);
+
       if (this.commandName.length > 1) {
-        reply += '\n`aliases: {0}`';
-        reply = reply.split('{0}').join(this.aliases);
+        txt += '\naliases: `{0}`';
+        txt = txt.split('{0}').join(this.aliases);
       }
 
-      this._infoMessage = reply;
+      this._infoMessage = txt;
     }
 
     return this._infoMessage;
+  }
+
+  get helpInfo() {
+    if (this._helpInfo == null) {
+      var txt = '' +
+        '**{0}**\n: {1}' +
+        '';
+
+      txt = txt.split('{0}').join(this.mainCommandName);
+      txt = txt.split('{1}').join(this.infoModel.description);
+
+      if (this.commandName.length > 1) {
+        txt += '\naliases: `{0}`';
+        txt = txt.split('{0}').join(this.aliases);
+      }
+
+      this._helpInfo = txt;
+    }
+    return this._helpInfo;
   }
 
   get request() { return this._request; }
@@ -87,7 +128,7 @@ class ICommand {
       if (this.request.args != null
         && this.request.args.length == 1
         && this.request.args[0] === '?') {
-        this.sendInfo(this.infoMessage, this.fullCommandName);
+        this.commandInfo();
         return;
       }
 
@@ -216,13 +257,18 @@ class ICommand {
     this.send(txt, 'success', null, isSelfDelete);
   }
 
-  sendInfo(msg) {
-    var txt = "{2} **{0} Command**\n\n{1}";
-    txt = txt.split("{0}").join(this.commandName);
-    txt = txt.split("{1}").join(msg);
-    txt = txt.split("{2}").join(this.emoji(this.config.infoEmoji));
+  sendInfo(msg, isSelfDelete = false) {
+    var txt = '{1} {0}';
+    txt = txt.split('{0}').join(msg);
+    txt = txt.split('{1}').join(this.emoji(this.config.infoEmoji));
+    this.send(txt, 'info', null, isSelfDelete);
+  }
 
-    this.send(txt, 'info');
+  commandInfo() {
+    var txt = "**{0} Command**\n\n{1}";
+    txt = txt.split("{0}").join(this.mainCommandName);
+    txt = txt.split("{1}").join(this.infoMessage);
+    this.sendInfo(txt);
   }
 
   sendArgumentError(msg) {

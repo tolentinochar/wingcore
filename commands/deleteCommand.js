@@ -11,14 +11,14 @@ class DeleteCommand extends ICommand {
     }
 
     info() {
-        var ret = '' +
-            '`{0} <count>`' +
-            '\n: deletes messages' +
+        var model = this.newInfoModel;
+        model.header = '`{0} <count>`';
+        model.description = 'deletes messages';
+        model.detail = '' +
             '\n-`<count>`: number of messages to delete, limit of 100' +
             '\n-ex: `{0} 10`' +
             '';
-
-        return ret;
+        return model;
     }
 
     handle(args) {

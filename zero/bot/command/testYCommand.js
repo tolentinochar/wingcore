@@ -8,12 +8,11 @@ class TestYCommand extends ICommand {
     }
 
     info() {
-        var ret = '' +
-            '`{0}`' +
-            '\n: test Y command.' +
-            '';
-
-        return ret;
+        var model = this.newInfoModel;
+        model.header = '`{0}`';
+        model.description = 'test Y command';
+        model.detail = '';
+        return model;
     }
 
     handle(args) {

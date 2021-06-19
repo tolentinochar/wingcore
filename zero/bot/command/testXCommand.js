@@ -8,12 +8,11 @@ class TestXCommand extends ICommand {
     }
 
     info() {
-        var ret = '' +
-            '`{0}`' +
-            '\n: test X command.' +
-            '';
-
-        return ret;
+        var model = this.newInfoModel;
+        model.header = '`{0}`';
+        model.description = 'test X command';
+        model.detail = '';
+        return model;
     }
 
     handle(args) {

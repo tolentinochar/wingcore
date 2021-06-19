@@ -9,12 +9,11 @@ class InstanceCommand extends ICommand {
     }
 
     info() {
-        var ret = '' +
-            '`{0}`' +
-            '\n: reponds with the bot instance currently running' +
-            '';
-
-        return ret;
+        var model = this.newInfoModel;
+        model.header = '`{0}`';
+        model.description = 'reponds with the bot instance currently running';
+        model.detail = '';
+        return model;
     }
 
     handle(args) {

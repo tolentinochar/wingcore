@@ -21,17 +21,17 @@ class PollCommand extends ICommand {
     }
 
     info() {
-        var ret = '' +
-            '`{0} <"text"> ["option1"] ["option2"] ... ["option9"]`' +
-            '\n: creates a poll using emoji to vote' +
+        var model = this.newInfoModel;
+        model.header = '`{0} <"text"> ["option1"] ["option2"] ... ["option9"]`';
+        model.description = 'creates a poll using emoji to vote';
+        model.detail = '' +
             '\n-`<"text">`: poll question' +
             '\n-`["option"]`: optional answer candidates, limit of 9 options' +
             '\n: if no option is given, Yes and No options are used by default' +
             '\n-`<"text">` and `["option"]` should be enclosed in `\"` double quotes if there are multiple words' +
-            '\n-ex:`{0} "what\'s your favorite color?" black "blue green" red`'
-        '';
-
-        return ret;
+            '\n-ex:`{0} "what\'s your favorite color?" black "blue green" red`' +
+            '';
+        return model;
     }
 
     handle(args) {

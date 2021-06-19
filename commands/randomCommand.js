@@ -9,14 +9,14 @@ class RandomCommand extends ICommand {
     }
 
     info() {
-        var ret = '' +
-            '`{0} [maxNumber]`' +
-            '\n: replys with a random number between 1 and [maxNumber]' +
+        var model = this.newInfoModel;
+        model.header = '`{0} [maxNumber]`';
+        model.description = 'replys with a random number between 1 and [maxNumber]';
+        model.detail = '' +
             '\n-`[maxNumber]`: optional maximum number, 1000 is used by default' +
             '\n-ex:`{0} 777`' +
             '';
-
-        return ret;
+        return model;
     }
 
     handle(args) {

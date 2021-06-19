@@ -15,12 +15,11 @@ class PingCommand extends ICommand {
     }
 
     info() {
-        var ret = '' +
-            '`{0}`' +
-            '\n: pings the server then responds with a greeting' +
-            '';
-
-        return ret;
+        var model = this.newInfoModel;
+        model.header = '`{0}`';
+        model.description = 'pings the server then responds with a greeting';
+        model.detail = '';
+        return model;
     }
 
     handle(args) {
