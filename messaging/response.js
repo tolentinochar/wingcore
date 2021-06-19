@@ -13,22 +13,15 @@ class Response {
       };
     }
 
-    if (isSelfDelete) {
-      return await model.message.channel.send({ embed: msg })
-        .then(msg => {
-          setTimeout(() => msg.delete(), 10000)
-        })
-        .catch(function (e) {
-          throw e;
-        });
-
-    }
-    else {
-      return await model.message.channel.send({ embed: msg })
-        .catch(function (e) {
-          throw e;
-        });
-    }
+    return await model.message.channel.send({ embed: msg })
+      .then(m => {
+        if (isSelfDelete) {
+          setTimeout(() => m.delete(), 10000);
+        }
+      })
+      .catch(function (e) {
+        throw e;
+      });
   }
 
   static async reply(model, isSelfDelete = false) {
@@ -49,21 +42,15 @@ class Response {
       msg = null;
     }
 
-    if (isSelfDelete) {
-      return await model.message.reply(model.replyText, (msg != null) ? { embed: msg } : null)
-        .then(msg => {
-          setTimeout(() => msg.delete(), 10000)
-        })
-        .catch(function (e) {
-          throw e;
-        });
-    }
-    else {
-      return await model.message.reply(model.replyText, (msg != null) ? { embed: msg } : null)
-        .catch(function (e) {
-          throw e;
-        });
-    }
+    return await model.message.reply(model.replyText, (msg != null) ? { embed: msg } : null)
+      .then(m => {
+        if (isSelfDelete) {
+          setTimeout(() => m.delete(), 10000);
+        }
+      })
+      .catch(function (e) {
+        throw e;
+      });
   }
 
   static get newMessage() {
