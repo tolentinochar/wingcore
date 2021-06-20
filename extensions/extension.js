@@ -108,3 +108,8 @@ String.prototype.sanitize = function () {
 String.prototype.isEmpty = function () {
   return this == null || this == undefined || this == '';
 };
+
+String.prototype.toMinute = function () {
+  var ret = parseInt(this);
+  return ret * 60 * 1000;
+};

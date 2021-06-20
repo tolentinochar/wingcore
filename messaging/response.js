@@ -14,10 +14,11 @@ class Response {
     }
 
     return await model.message.channel.send({ embed: msg })
-      .then(m => {
+      .then(function (m) {
         if (isSelfDelete) {
           setTimeout(() => m.delete(), 10000);
         }
+        return m;
       })
       .catch(function (e) {
         throw e;
@@ -43,10 +44,11 @@ class Response {
     }
 
     return await model.message.reply(model.replyText, (msg != null) ? { embed: msg } : null)
-      .then(m => {
+      .then(function (m) {
         if (isSelfDelete) {
           setTimeout(() => m.delete(), 10000);
         }
+        return m;
       })
       .catch(function (e) {
         throw e;
