@@ -92,8 +92,8 @@
     },
     {
       "name": "ballot_box",
-      "id": "854060980153483314",
-      "code": null
+      "id": null,
+      "code": "🗳️"
     },
     {
       "name": "8ball",
@@ -107,13 +107,23 @@
     },
     {
       "name": "small_blue_diamond",
-      "id": "854115729375625216",
-      "code": null
+      "id": null,
+      "code": "🔹"
+    },
+    {
+      "name": "arrow_left",
+      "id": null,
+      "code": "◀️"
+    },
+    {
+      "name": "arrow_right",
+      "id": null,
+      "code": "▶️"
     },
     {
       "name": "name_badge",
-      "id": "854482221086539806",
-      "code": null
+      "id": null,
+      "code": "📛"
     },
     {
       "name": "no_entry",
