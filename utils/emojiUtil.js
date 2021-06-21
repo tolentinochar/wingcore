@@ -1,6 +1,15 @@
-//emoji resource
-//https://emojipedia.org/symbols/
-//https://www.fileformat.info/info/emoji/list.htm
+const emojiNumbers = [
+  'zero'
+  , 'one'
+  , 'two'
+  , 'three'
+  , 'four'
+  , 'five'
+  , 'six'
+  , 'seven'
+  , 'eight'
+  , 'nine'
+];
 
 class EmojiUtil {
   static get(emojiName, emojis) {
@@ -29,6 +38,10 @@ class EmojiUtil {
   static searchEmoji(emojiName, emojis) {
     var ret = (emojiName != null && emojis != null) ? emojis.find(x => x.name === emojiName) : null;
     return ret;
+  }
+
+  static number(number, emojis) {
+    return this.get(emojiNumbers[number], emojis);
   }
 }
 

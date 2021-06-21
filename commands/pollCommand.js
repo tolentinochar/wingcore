@@ -1,18 +1,5 @@
 const ICommand = require('./iCommand.js');
 
-const emojiNumbers = [
-    'zero'
-    , 'one'
-    , 'two'
-    , 'three'
-    , 'four'
-    , 'five'
-    , 'six'
-    , 'seven'
-    , 'eight'
-    , 'nine'
-];
-
 class PollCommand extends ICommand {
     constructor() {
         var model = {};
@@ -54,8 +41,8 @@ class PollCommand extends ICommand {
         }
 
         for (var i = 1; i < args.length; i++) {
-            emojis.push(this.emoji(emojiNumbers[i]));
-            answers.push(this.emoji(emojiNumbers[i]) + ' ' + args[i]);
+            emojis.push(this.emojiNumber(i));
+            answers.push(this.emojiNumber(i) + ' ' + args[i]);
         }
 
         msg = msg.split('{0}').join(args[0]); //question

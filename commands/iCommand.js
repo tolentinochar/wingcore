@@ -1,4 +1,5 @@
-const response = require('../messaging/response.js');
+const responseMessaging = require('../messaging/response.js');
+const response = new responseMessaging();
 const textUtil = require('../utils/textUtil.js');
 const emojiUtil = require('../utils/emojiUtil.js');
 const colorUtil = require('../utils/colorUtil.js');
@@ -104,7 +105,12 @@ class ICommand {
   get responseEmoji() { return this._responseEmoji; }
 
   get config() { return this._config; }
-  set config(value) { if (value) this._config = value; }
+  set config(value) { 
+    if (value) {
+      this._config = value;
+      response.emojis = this.config.emojis;
+    }
+  }
 
   handleCommand(req) {
     this.request = req;
@@ -181,7 +187,7 @@ class ICommand {
     return false;
   }
 
-  send(messageText, colorName, emojiName, isSelfDelete = false) {
+  send(texts, colorName, emojiName, isSelfDelete = false) {
     var emojiUrl = null;
     var colorHex = null;
 
@@ -201,14 +207,14 @@ class ICommand {
 
     var model = response.newMessage;
     model.message = this.request.message;
-    model.messageText = messageText;
+    model.texts = texts;
     model.color = colorHex;
     model.emojiUrl = emojiUrl;
 
     return response.send(model, isSelfDelete);
   }
 
-  reply(replyText, messageText, colorName, emojiName, isSelfDelete = false) {
+  reply(texts, colorName, emojiName, isSelfDelete = false) {
     var emojiUrl = null;
     var colorHex = null;
 
@@ -228,8 +234,7 @@ class ICommand {
 
     var model = response.newMessage;
     model.message = this.request.message;
-    model.messageText = messageText;
-    model.replyText = replyText;
+    model.texts = texts;
     model.color = colorHex;
     model.emojiUrl = emojiUrl;
 
@@ -282,6 +287,10 @@ class ICommand {
 
   emoji(emojiName) {
     return emojiUtil.get(emojiName, this.config.emojis);
+  }
+
+  emojiNumber(number) {
+    return emojiUtil.number(number, this.config.emojis);
   }
 
   emojiUrl(emojiName) {
